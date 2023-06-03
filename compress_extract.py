@@ -42,3 +42,4 @@ def extract_files(archive_file, extraction_path):
 # Example usage
 compress_files("path/to/directory", "compressed.zip", "zip")
 extract_files("compressed.zip", "path/to/extract")
+
