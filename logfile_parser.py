@@ -2,6 +2,14 @@
 # relevant information (e.g., timestamps, error messages), and generate a summary report or perform specific actions
 # based on the log data.
 
+# Input consists of 4 sample log files in .txt format (this could be altered to log) containing the following lines:
+# [2023-05-29 10:25:12] INFO: Application started
+# [2023-05-29 10:25:15] DEBUG: Connecting to database server
+# [2023-05-29 10:25:16] ERROR: Database connection failed - Connection timeout
+# [2023-05-29 10:25:18] WARNING: Insufficient disk space - Cleanup required
+# [2023-05-29 10:25:22] DEBUG: Initializing application modules
+# [2023-05-29 10:25:25] INFO: Application ready
+
 import os
 import re
 
