@@ -44,21 +44,22 @@ def aggregate_results(directory):
         if filename.endswith('.txt'):
             filepath = os.path.join(directory, filename)
             headers, data = extract_info_from_document(read_document_from_file(filepath))
-            for entry in data:
-                ip_address = entry['target']
-                if ip_address not in ip_results:
-                    ip_results[ip_address] = []
-                ip_results[ip_address].append(entry)
+            for entry in data: # This line iterates over each data entry extracted from the document.
+                ip_address = entry['target'] # This line extracts the 'target' IP address from the current data entry.
+                if ip_address not in ip_results:  # Checking if IP address is not already in results dictionary. 
+                    ip_results[ip_address] = []   # If it's not present, a new empty list is created for that IP address. 
+                ip_results[ip_address].append(entry) # Then, the current data entry is appended to the list associated with that IP address in the ip_results dictionary.
     return ip_results
 
 def write_combined_dataset(aggregated_directory, ip_results):
     if not os.path.exists(aggregated_directory):
         os.makedirs(aggregated_directory)
-    print("Creating directory '{}' ... done.".format(aggregated_directory))
+    print("Creating directory '{}' ... done.".format(aggregated_directory)) #  This is a method of the string class that formats the string by replacing placeholders with the specified values. 
+    # In this case, it replaces {} with the value of aggregated_directory.
 
     print("IP addresses encountered:")
-    for ip_address, data in ip_results.items():
-        print(" -", ip_address)
+    for ip_address, data in ip_results.items(): # This loop iterates over each key-value pair in the ip_results dictionary. Each key represents an IP address, and the associated value is a list of data entries related to that IP address.
+        print(" -", ip_address) # This line prints each IP address encountered during the aggregation process. The - is used as a prefix to each IP address for formatting.
         combined_data = "\n".join(["\t".join(map(str, [entry['ping']] + entry['stats'])) for entry in data])
         with open(os.path.join(aggregated_directory, f"{ip_address}.txt"), 'w') as file:
             file.write(combined_data)
