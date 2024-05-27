@@ -4,6 +4,10 @@
 with open('data.txt', 'r') as f:
   data = f.read()
 
+# OR: you can use the readlines() method to get a LIST of string values from the file, one string for each line of text:
+  data = f.readlines()
+  print(data)
+  
 with open('data.txt', 'r') as f:
   f.write(data)
 
@@ -101,6 +105,7 @@ for entry in basepath.iterdir():
 
 import os 
 os.mkdir('example_directory/')
+os.mkdir('testdir', 755) # it can take a second parameter to specify permissions
 
 # If a directory already exists, os.mkdir() raises FileExistsError. Alternatively, you can create a directory using pathlib:
 
@@ -128,6 +133,7 @@ p.mkdir(exist_ok=True) # this will not raise an error if the directory already e
 
 import os
 os.makedirs(2018/10/05, mode=0o770) # creates the 2018/10/05 directory structure and gives the owner and group users read, write and execute permissions (NOT TESTED!)
+os.makedirs('testdir2/something/somethinselse', 755)
 
 # Method 2: Use .mkdir() from pathlib.Path:
 
