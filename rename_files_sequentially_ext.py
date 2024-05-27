@@ -112,4 +112,77 @@ temp = re.findall(r'\d+', lastfile)[0]
 for i in range(int(temp), len(files2) + int(temp)): #int(temp): Converts the value stored in the variable temp (which represents the numeric part extracted from the last filename in path/to/folder1) into an integer. 
   os.rename('/path/to/folder2' + '/' + files2[i], f"/path/to/folder2/file{i}.txt")
 
-  
+# Example 3: Renaming files with sequence number
+
+import os
+
+path = r'/path/to/folder'
+fileseq = 1
+
+for filename in os.listdir(path):
+  os.rename(filename, 'newfilename_' + str(fileseq))
+  fileseq += 1
+
+# Example 4: Get a filename without extension using the split() function 
+
+import os
+path = '/path/to/directory/filename.exe'
+print(os.path.basename(path).split('.')[0]
+
+# Method 2: Get a filename from the path without extension using Path.stem 
+
+import pathlib 
+path = '/path/to/directory/filename.exe'
+full_name = pathlib.Path(path).name
+file_name = pathlib.Path(path).stem
+
+print(full_name)
+print(file_name)
+
+# Output: file1.txt, file1
+
+# Method 3: Get the filename from the path without extension using rfind()
+# Steps to solve:
+# (1) use the ntpath module
+# (2) extract the base name from the file from the path and append it to a separate array
+# (3) take the array generated and find the last occurrence of the '.' character in the string 
+# Note: finding only the instance of '.' instead of the last occurrence may create problems if the name of the file itself contains '.'
+# (4) We would find that index using rfind and then finally slice the part of the string before the index to get to the filename
+
+import ntpath 
+
+path = '/path/to/file/filename.exe'
+filenames = []
+for p in path:
+  filenames.append(ntpath.basename(p))
+
+for name in filenames:
+  k = name.rfind('.')
+  print(name[:k])
+
+# OR: you can use print(path.rpatition('.')[0])
+# OR: you can use splitext() to split the path name into a pair root and extension 
+
+import os
+path = '/path/to/file/filename.exe'
+print(os.path.splitext(path)[0])
+
+# Output: /path/to/file/filename
+
+# OR: You can extract the filename from the path without the extension using the split() function
+file_path = "/home/user/file1.txt"
+file_name = file_path.split("/")[-1]
+print(file_name) 
+
+# Output: file1.txt
+
+# OR: you can use the os.path.basename function to get the filename from a given path without the extension
+
+import os
+
+file_path = "/home/user/file1.txt"
+full_name = os.path.basename(file_path)
+file_name = os.path.splitext(full_name)
+
+print(full_name)
+print(file_name[0])
