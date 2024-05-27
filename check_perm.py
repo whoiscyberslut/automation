@@ -35,6 +35,15 @@ import stat
 # Equivalent to chmod 777 
 os.chmod('test.txt', stat.S_IRWXU|stat.S_IRWXG|stat.S_IRWXO)
 
+# Method 2: Using os.chmod to set the permissions bitwise 
+
+import os
+import sys
+
+os.chmod('myfile.txt', 0o644)
+os.chmod('mydir', 0o755)
+
+
 # Check file permissions for the current user (including any additional permissions granted through group membership or other means (like ACLs))
 
 import os 
@@ -99,9 +108,6 @@ def check_file_permissions(file_path):
 
 # Example usage: check_file_permissions("/path/to/file.txt")
 
-
-
-
 # Example 2: Check for file permissions for the owner of a file as recorded in the file's metadata
 
 # Context: These checks are specific to the file's owner permissions, as stored in the file's metadata. It doesn't account for the current user's effective permissions unless 
@@ -127,5 +133,10 @@ def check_file_permissions(file_path):
     print(f"Execute permission is not granted for the owner of file: {file_path}")
 
 # Example usage: check_file_permissions(file_path)
+
+# Example 3: Change file permissions using the subprocess module (NOT TESTED!)
+
+import subprocess
+subprocess.call(['chmod', '0444', 'myfile.txt'])
 
 
