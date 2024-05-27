@@ -19,6 +19,26 @@ for path in current_dir.iterdir():
   info = path.stat()
   print(info.st_mtime)
 
+# Method 2: Using os.path.getsize(path) to return the size in bytes of the file in the path argument 
+
+import os
+
+print(os.path.getsize('/home/user/script.py'))
+
+# Output: 2097
+
+# Method 3: Use os.listdir() to find the total size of all the files in a given directory
+
+import os
+
+totalsize = 0
+for filename in os.listdir('/home/user'):
+  totalsize = totalsize + os.path.getsize(os.path.join('/home/user', filename))
+  
+print(totalsize)
+
+# Output: 5122383
+
 # Converting this into a human-readable format: 
 
 from datetime import datetime
