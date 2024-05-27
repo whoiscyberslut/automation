@@ -42,7 +42,7 @@ import sys
 
 os.chmod('myfile.txt', 0o644)
 os.chmod('mydir', 0o755)
-
+os.chmod('test', 774)
 
 # Check file permissions for the current user (including any additional permissions granted through group membership or other means (like ACLs))
 
