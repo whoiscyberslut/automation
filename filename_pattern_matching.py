@@ -28,6 +28,8 @@ for file_name in os.listdir('some_directory'/):
   if fnmatch.fnmatch(file_name, '*.txt'):
     print(file_name)
 
+# OR: os.rename(filename, 'new_' + filename) to rename all the .txt files in the specified directory by adding a 'new_' prefix to each file name
+
 # More advanced pattern matching 
 # Example: let's suppose you want to find .txt files that contain the word data, a number between a set of underscores, and the word backup in thir filename, e.g. data_01_backup, data_02_backup, and so on.
 
@@ -52,7 +54,25 @@ for name in glob.glob('[0-9].txt'): $ finds all text (.txt) files that contain d
 import glob
 for file in glob.glob('**/*.py', recursive=True): # searches for .py files in the current directory and any subdirectories 
   print(file)
-  
+
+# Example 1: Pattern-based file renaming with the glob module: replacing 'draft' with 'final' in filenames
+
+import glob
+import os
+
+for filename in glob.glob('draft*.txt'):
+  os.rename(filename, filename.replace('draft', 'final'))
+
+# OSError is one of the most common errors you might stumble upon when renaming files. This error often pops up, when the file you're trying to rename either doesn't exist 
+# or you lack the necessary permissions to modify it, e.g: 
+
+import os
+
+try:
+  os.rename('old_filename.txt', 'new_filename.txt')
+except OSError as e:
+  print(f'Error: {e.strerror}')
+
 # Method 4: Using pathlib.Path.glob()
 
 from pathlib import Path
@@ -88,6 +108,7 @@ os.path.basename(path) # Output: script.py
 # If you need a path's dir name and base name together, you can call os.path.split() to get a tuple value with these two strings:
 
 print(os.path.split(p)) # Output: ('/home/user', 'script.py') 
+'/usr/bin'.split(os.sep) # returns all the paths of the path as strings; on Linux systems, the returned list of folders will begin with a blank string: ['', 'usr', 'bin']
 
 # OR: call os.path.dirname() and os.path.basename(), and place their return values in a tuple:
 
@@ -96,4 +117,17 @@ print((os.path.dirname(p), os.path.basename(p)))
 # NOTE: os.path.split() does NOT take a file path and return a list of strings of each folder. For that, use the split() string method and split on the string in os.sep
 # (Note that sep is in os, NOT in os.path)!!
 
-'/usr/bin'.split(os.sep) # returns all the paths of the path as strings; on Linux systems, the returned list of folders will begin with a blank string: ['', 'usr', 'bin']
+# Method 5: Using Python's f-strings with the os.rename() function to dynamically generate new file names
+
+import os
+
+file_number = 1
+for filename in os.listdir('directory_path'):
+  if filename.endswith('.txt'):
+    new_filename = f'new_file_{file_number}.txt'
+    os.rename(filename, new_filename)
+    file_number += 1
+
+# Output: 'new_file_1.txt', 'new_file_2.txt', 'new_file_3.txt', and so on...
+
+
