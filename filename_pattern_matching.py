@@ -49,19 +49,145 @@ import glob
 for name in glob.glob('[0-9].txt'): $ finds all text (.txt) files that contain digits in the filename
   print(name)
 
-# Search for files recursively in subdirectories using glob 
+# Example 1: Search for files recursively in subdirectories using glob 
 
 import glob
-for file in glob.glob('**/*.py', recursive=True): # searches for .py files in the current directory and any subdirectories 
+for file in glob.glob('**/*.py', recursive=True): # the ** pattern means "this directory and all subdirectory recursively" will be searched for .py files
   print(file)
 
-# Example 1: Pattern-based file renaming with the glob module: replacing 'draft' with 'final' in filenames
+# Example 2: Finding file using character ranges []
+
+print('Finding file using character ranges []:-')
+print(glob.glob('./[0-9].*')) # ./ refers to the current directory, [0-9] matches any single digit from 0 to 9, which is followed by a dot and 0 or more characters of any kind
+
+# Putting it all together, the pattern matches any file in the current directorythat: starts with a single digit, is followed by a dot and, zero or more characters of any kind
+
+# Example output: '1.txt', '2.py', '4.hello'
+
+# Example 3: Search for Python files (.py) in the current directory whose filenames contain any of the characters -, _, or # and print the paths of these files
+
+import glob
+
+char_seq = "-_#"
+
+for spcl_char in char_seq:
+  esc_set = "*" + glob.escape(spcl_char) + "*" + ".py"
+  for py in glob.glob(esc_set):
+    print(py)
+
+# Output: my-script.py, another-file.py, test_script.py, example#file.py
+
+# Example 4: Search for a folder or file in a multi-level directory 
+
+# [] matches any character in the sequence, e.g. [psr]* matches files starting with the letter p, s, or r, whereas [!] matches any character not in the sequence, e.g. [!psr]*
+# matches files not starting with the letter p, s, or r.
+
+print('All files starting with the word march')
+for item in glob.glob("sales/march*"):
+  print(item)
+
+print(glob.glob("sales/[a-f]*.txt")) # Output: ['salesbar.txt', 'saleschart.txt']
+print(glob.glob("sales[2-5].*")) # Output: ['sales2.txt']
+
+# Example 5: glob() files with multiple extensions
+
+import glob
+
+print("All pdf and txt files")
+
+extensions = ('*.pdf', '*.txt')
+files_list = []
+
+for ext in extensions:
+  files_list.append(glob.glob(ext))
+print(files_list)
+
+# Output: ['christmas_envelope.pdf', 'reindeer.pdf', '1.jpeg', '2.jpeg', '4.jpeg', '3.jpeg', 'abc.jpeg']
+
+# Example 6: Using glob() with regex: searching for an employee whose name matches the user input in a folder with jpeg files of employees
+
+import glob
+import re
+
+num = input('Enter the employee number: ')
+regex = rf'[a-z_]+{num}.*'
+
+for file in glob.glob("2020/*"):
+  if re.search(regex, file):
+    print("Employee Photo: ", file)
+
+''' 
+Directory contents:
+2020/
+    john_doe1234.jpg
+    jane_doe5678.jpg
+    mike_7890.jpg
+    doe_john1234.png
+
+If the user enters '1234', the script will output:
+
+Enter the employee number: 1234
+Employee Photo: 2020/john_doe1234.jpg
+Employee Photo: 2020/doe_john1234.png
+''''
+
+# Example 7: Pattern-based file renaming with the glob module: replacing 'draft' with 'final' in filenames
 
 import glob
 import os
 
 for filename in glob.glob('draft*.txt'):
   os.rename(filename, filename.replace('draft', 'final'))
+
+# OR: you can use glob to read the content of each file and checks if the word 'profit' is present:
+
+import glob
+
+path = '**/*.txt'
+search_word = 'profit'
+final_files = []
+
+for file in glob.glob(path, recursive=True):
+  try:
+    with open(file) as fp:
+      data = fp.read()
+      if search_word in data:
+        final_files.append(file)
+  except:
+    print('Exception while reading file')
+print(final_files)
+
+# Output: ['salesdata_2021.txt']
+
+print(sorted(glob.glob(path)))
+
+# Output: ['profit_april.txt', 'profit_march.txt', 'sales_april.txt', 'sales_march.txt']
+
+# We can sort the files based on the date and time of modification by combining the glob() method wit the getmtime() method in the os.module
+
+import glob
+import os
+
+files = glob.glob(os.path.expanduser("*"))
+
+# Sort by modification time (mtime) ascending and descending 
+files_ascending = sorted(files, key=lambda t: os.stat(t).st_mtime)
+print(files_ascending)
+files_descending = sorted(files, key=lambda t:os.stat(t).st_mtime)
+print(files_descending)
+
+# Output: ['sales_april.txt', 'sales_march.txt', 'profit_april.txt', 'profit_march.txt', 'sales', 'glob_demo.py']; ['glob_demo.py', 'sales', 'profit_march.txt', 'profit_april.txt', 'sales_april.txt', 'sales_march.txt']
+
+# Deleting files using glob() 
+
+import glob
+import os
+
+for pdf in (glob.glob("/2020/*.pdf")):
+  print("Removing ", pdf)
+  os.remove(pdf)
+
+# Output: Removing salesjune.pdf
 
 # OSError is one of the most common errors you might stumble upon when renaming files. This error often pops up, when the file you're trying to rename either doesn't exist 
 # or you lack the necessary permissions to modify it, e.g: 
@@ -129,5 +255,6 @@ for filename in os.listdir('directory_path'):
     file_number += 1
 
 # Output: 'new_file_1.txt', 'new_file_2.txt', 'new_file_3.txt', and so on...
+
 
 
