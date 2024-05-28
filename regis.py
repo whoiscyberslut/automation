@@ -158,3 +158,7 @@ oldstr = 'IMG_20190401_235959.jpeg'
 match = regex.match(oldstr)
 newstr = '{}--{}--{}_{}_{}.jpg.format(*match.groups())
 print(newstr) # 2019-04-01_29_59.jpg
+
+url_regex = (http)?s?\:?\/?\/?\/?(www\.)?[a-zA-Z0-9]+\.com
+
+# Email in a log file: [a-zA-Z0-9-.]+\@[a-z-]+\.[a-z]+
