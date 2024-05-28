@@ -30,7 +30,11 @@ for process in processes:
 # Example 2: Getting the name of the current user logged in the system using the os module
 
 import os
-os.getlogin() 
+try:
+  user = os.getlogin() 
+  print(user)
+except:
+  print("An error occurred")
 
 # Output: 'rashan'
 
@@ -61,6 +65,17 @@ print(os.getppid()) # Get the parent process ID; returns 12344
 import os
 print(os.environ['HOME']) # gets the value of the 'HOME' environmental variable
 
+# Setting Up environment variables and shell context
+
+import subprocess
+import os
+
+# Create a copy of the current environment variables
+env_vars = os.environ.copy()
+# Add/Modify an environment variable
+env_vars["MY_VARIABLE"] = "MyValue"
+subprocess.run(['printenv', 'MY_VARIABLE'], env=env_vars)
+
 # Example 6: Using the os.name() function to return the name of the operating system familly, as specified by the IEEE
 
 import os
@@ -88,8 +103,75 @@ return_value = os.system(command + " " + filename)
 print('##############')
 print('Return Value:', return_value)
 
+# Handling errors:
+
+import os 
+home_dir = os.system("cd ~") 
+print("`cd ~` ran with exit code %d" % home_dir) 
+unknown_dir = os.system("cd doesnotexist") 
+print("`cd doesnotexis` ran with exit code %d" % unknown_dir)
+
+# Example output:
+
+'''
+$ python3 cd_return_codes.py
+`cd ~` ran with exit code 0
+sh: line 0: cd: doesnotexist: No such file or directory
+`cd doesnotexist` ran with exit code 256
+'''
+
 # Example 8: Getting the UID and GID of a system using the os module
 
 os.getuid() # -> 1000
 os.getgid() # -> 1000
+
+# Example 7: Creating a Python wrapper around the ping command that only prints wheher the host is reachable or not
+
+import subprocess
+
+def simple_ping(host):
+  result = subprocess.run(['ping', '-c', '1', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  if result.returncode == 0:
+    print(f"{host} is reachable.")
+  else:
+    print(f{host} is not reachable.")
+
+  host = input("Enter a host to ping: ")
+  simple_ping(host)
+
+# Example 8: Fetching the free disk space
+
+import subprocess
+
+def get_free_space():
+  result = subprocess.run(['df', '-h'].stdout.subprocess.PIPE)
+  print(result.stdout,decode())
+
+get_free_space()
+
+# Example 8: Backing up a directory regularly
+
+import subprocess
+
+def backup_directory(src, dest):
+# Check if the source directory exists
+  if not os.path.isdir(src):
+    print(f"Source directory {src} does not exist.")
+    return
+    
+  try:
+  # Creating a tarball of the source directory
+    subprocess.run(['tar', '-czf', dest, src])
+    print(f"Backup of {src} created at {dest}")
+  except subprocess.CalledProcessError as e:
+    print(f"An error occurred while creating the backup: {e}")
+
+src_dir = '/path/to/source/dir'
+backup_path = '/path/to/backup.tar.gz'
+
+# Ensure paths are absolute
+src_dir = os.path.abspath(src_dir)
+backup_path = os.path.abspath(backup_path)
+
+backup_directory(src_dir, backup_path)
 
