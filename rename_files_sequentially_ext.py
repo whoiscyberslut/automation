@@ -230,3 +230,17 @@ for file in os.listdir():
   new_name = f"{splitted[3].zfill(2)}-{splitted[1]}-{splitted[2]}-{splitted[0]}{ext}"
   f.rename(new_name)
 
+# Example 7: Renaming filenames of the form `xyz.ogg.mp3` to `xyz.mp3`
+
+for file in os.listdir("./"):
+  if file.endswith(".mp3") and '.ogg' in file:
+    os.rename(file, file.replace('.ogg', ''))
+
+# OR
+
+from pathlib import Path
+for path in Path('.').glob('*.mp3'):
+  if '.ogg' in path.stem:
+    new_name = path.name.replace('.ogg', '')
+    path.rename(path.with_name(new_name))
+
