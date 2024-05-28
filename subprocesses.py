@@ -60,7 +60,7 @@ def list_command(args= '-l'):
  # Splitting the output so that we can parse them line by line 
  output = output.split("\n") 
 	
-	output = output[0].split('\\')
+ output = output[0].split('\\')
  res = []  # Filter out any empty lines
 
  # Iterate through the output line by line
