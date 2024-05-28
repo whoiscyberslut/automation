@@ -31,6 +31,7 @@ Path('/path/to/directory').is_absolute()
 # (1): Calling os.path.abspath(path) will return a string of the absolute path of the argument. This is an easy way to convert a relative path into an absolute one
 # (2): Calling os.path.isabs(path) will return True if the argument is an absolute path and False is it is a relative path
 # (3):  Calling os.path.relpath(path, start) will return a string of a relative path from the start path to path. If start is not provided, the current working directory is used.
+# (4): Calling os.path.islink(path) checks if the given path if its a symlink or not
 
 # Checking path validity with p.exists(), p.is_file(), and p.is_dir()
 
