@@ -10,3 +10,16 @@ print('The input to the script is: %s' %sys.argv[1]) # argument passed by user
 
 import sys
 sys.platform # returns 'linux' 
+
+# OR: use the uname function of the os module to get a detailed description about the current operating system, such as the name, machine, release details, version, and 
+# hardware configuration.
+
+import os
+os.uname()
+
+# Output: posix.uname_result(sysname='Linux', nodename='kali', release='5.6.0-2-kali2-amd64', version='#1 SMP Debian 5.6.14-2kali1 (2020-06-10)', machine='x86_64)
+
+# Example 2: Get the Python version
+
+import sys
+print(sys.version)
