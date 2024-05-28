@@ -1,8 +1,16 @@
 # Working with files in Python 
 
 # Python's "with open(...) as ..." Pattern
-with open('data.txt', 'r') as f:
-  data = f.read()
+
+try:
+  with open('data.txt', 'r') as f:
+    data = f.read()
+except FileNotFoundError:
+  print("The file does not exist.")
+except PermissionError:
+  print("Permission denied.")
+
+# IOError: related to input and output that include file-related issues; FileAlreadyExistsError: create a file that already exists
 
 # OR: you can use the readlines() method to get a LIST of string values from the file, one string for each line of text:
   data = f.readlines()
@@ -101,11 +109,15 @@ for entry in basepath.iterdir():
     print(entry.name)
 
 # Making directories using os and pathlib modules 
-# Example 1: Creating a single directory - pass a path to the directory as a parameter to os.mkdir():
+# Example 1: Creating a single directory - pass a path to the directory as a parameter to os.():
 
 import os 
-os.mkdir('example_directory/')
-os.mkdir('testdir', 755) # it can take a second parameter to specify permissions
+try:
+  os.mkdir('example_directory/')
+  os.mkdir('testdir', 755) # it can take a second parameter to specify permissions
+  print("The directory has been created successfully")
+except FileExistsError: # you can use an 'if os.path.exists(path): os.mkdir("path")' statement 
+  print("The directory names " + path + " already exists.")
 
 # If a directory already exists, os.mkdir() raises FileExistsError. Alternatively, you can create a directory using pathlib:
 
@@ -164,7 +176,11 @@ for dirpath, dirnames, files in os.walk('.', topdown=False): # passing the topd
 
 import os
 data_file '/Users/john/Desktop/Test/data.txt'
-os.remove(data_file)
+
+try:
+  os.remove(data_file)
+except PermissionError:
+  print('Permission error: Unable to delete files')
 
 # Method 2: Using os.unlink() to delete files
 
@@ -246,16 +262,23 @@ for dirpath, dirnames, files in os.walk('.', topdown=False): # walks down the di
   except OSError as ex:
     pass
 
+# OR: you can perform a safedelete by using the third-party send2trash module after running $ pip install --user send2trash from a Terminal window to install it
+
+import send2trash
+
+baconfile = open('bacon.txt', 'a') # creates the file
+baconfile.write('Bacon is not a vegetable')
+baconfile.close()
+send2trash.send2trash('bacon.txt')
+
 # Copying files using shutil.copy() and shutil.copy2()
 # NOTE: Using .copy2() preserves details about the file such as last access time, permission bits, last modification time and flags!!!!!!!
 
 import shutil
 
 src = 'path/to/file.txt'
-dst = 'path/to/dest_dir'
-shutil.copy(src, dst)
-
-OR: 
+dst = 'path/to/dest_dir' # or 'path/to/dest_dir/file1.txt' to move file.txt to the dest_dir directory under a different name
+shutil.copy(src, dst) 
 
 import shutil
 
@@ -263,12 +286,61 @@ src = 'path/to/file.txt'
 dst = 'path/to/dest_dir'
 shutil.copy2(src, dst)
 
+# Copying an entire folder and every folder and file contained in it with shutil.copytree(source, destination). Calling it copies the folder at the path source, along with all
+# of its files and subfolders, to the folder at the path destination. The soure and destination parameters are both strings.
+
+shutil.copytree(p / 'SecLists', p / 'SecLists2') # creates a new folder named SecLists2 with the same content as the original SecLists folder; backup
+
 # Moving files and directories using shutil.move(src, dst) (where src is the file or directory to be moved and dst is the destination)
 
 import shutil
 
 shutil.move('dir_1', 'backup/') # moves dir_1/ into backup/ if backup/ exists. If backup/ does not exist, dir_1 will be renamed to backup.
 
+import os
+import shutil 
+
+audio = (".3ga", ".aac", ".ac3", ".aif", ".aiff",
+         ".alac", ".amr", ".ape", ".au", ".dss",
+         ".flac", ".flv", ".m4a", ".m4b", ".m4p",
+         ".mp3", ".mpga", ".ogg", ".oga", ".mogg",
+         ".opus", ".qcp", ".tta", ".voc", ".wav",
+         ".wma", ".wv")
+
+video = (".webm", ".MTS", ".M2TS", ".TS", ".mov",
+         ".mp4", ".m4p", ".m4v", ".mxf")
+
+img = (".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".png",
+       ".gif", ".webp", ".svg", ".apng", ".avif")
+
+def is_audio(file):
+  return os.path.splitext(file)[1] in audio
+
+def is_video(file):
+  return os.path.splitext(file)[1] in video
+
+def is_image(file):
+  return os.path.splitext(file)[1] in img
+
+def is_screenshot(file):
+  name, ext = os.path.splitext(file)
+  return (ext in img) and "screenshot in name.lower()
+
+os.chdir("/Users/patrick/Desktop")
+
+for file in os.listdir():
+  if is_audio(file):
+    shutil.move(file, "/Users/patrick/Documents/audio")
+  elif is_video(fiile):
+    shutil.move(file, "/Users/patrick/Documents/video")
+  elif is_image(file):
+    if is_screenshot(file):
+      shutil.move(file, "/Users/patrick/Documents/screenshots")
+    else:
+      shutil.move(file, "/Users/patrick/Documents/images")
+  else:
+      shutil.move(file, "/Users/patrick/Documents/")
+    
 # Renaming files and directories 
 
 # Method 1: Using os.rename(src, dst)
