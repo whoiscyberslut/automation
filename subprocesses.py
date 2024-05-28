@@ -18,6 +18,8 @@ import subprocess
 result = subprocess.run(["dir"], shell=True, capture_output=True, text=True)
 print(result.stdout)
 
+subprocess.run(['ls', '-l'])
+
 # Example 1: Running Python scripts using the subprocess.run() method
 
 import subprocess
@@ -30,6 +32,73 @@ result = subprocess.run(["C:\Users\owner\anaconda3\python", "-c", "print('This i
 print(result.stdout)
 
 # Output: This is directly from a subprocess.run() function
+
+# Safe way to pass user input
+
+import subprocess
+
+user_input = 'myfolder'
+subprocess.run(['ls', '-l', user_input])
+
+# Example: A function to list the files in the current directory, parse the output, and print each line
+
+def list_command(args= '-l'):
+ cmd = 'ls'
+ # Using the Popen function to execute the command and store the result in temp
+ # It returns a tuple that contains the data and the error, if any
+ temp = subprocess.run([cmd, args], stdout=subprocess.PIPE, text=True)
+
+ # Use the communicate function to fetch the output 
+ output = temp.stdout
+
+ # Splitting the output so that we can parse them line by line 
+ output = output.split("\n") 
+	
+	output = output[0].split('\\')
+ res = []  # Filter out any empty lines
+
+ # Iterate through the output line by line
+ output_lines = output.split("\n")
+    
+ res = [line for line in output_lines if line]
+
+ for line in res:
+  print(line)
+
+ return res
+
+def get_permissions():
+ res = list_command('-l')
+
+ permissions = {}
+ # Iterate through all the rows and retrieve the name of the file, and its permission
+ for line in res[1:]:  # Skip the first line (usually the total line in `ls -l` output)
+        parts = line.split()
+        if len(parts) < 9:
+            continue  # Skip lines that do not have the expected number of parts
+
+        permission_value = parts[0]
+        folder_name = parts[-1]
+
+        permissions[folder_name] = permission_value
+
+    try:
+        os.mkdir('output')
+    except FileExistsError:
+        pass
+
+    with open('output/permissions.txt', 'w') as out:
+        out.write('Folder Name : Permissions\n\n')
+        for folder in permissions:
+            out.write(f"{folder} : {permissions[folder]}\n")
+
+    return permissions
+
+if __name__ == '__main__':
+    result = list_command()
+    print("Parsed output:", result)
+    permissions = get_permissions()
+    print("Permissions:", permissions)
 
 # Using the check argument - a Boolean value that controls whether the function should check the return code of the command being run - when check is set to True, the function will check the return code of the
 # command and raise a CalledProcessError exception if the return code is non-zero (the exception will have the return code, stdout, stderr, and command as attributes). When check is set to False (default), 
@@ -67,6 +136,53 @@ with open("directories.txt", "r") as directories:
     subprocess.run("mkdir ./{0}".format(dirs), shell=True, capture_output=True)
 
 subprocess.run("ls", shell=True) # to verify that the script created all the directories
+
+# Handling both the output and potential errors
+
+try:
+	result = subprocess.run(['ls', '-l', '/nonexistent'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+except subprocess.CalledProcessError as e:
+	print(f'Error occurred: {e.stderr}')
+
+# Using one of the more advanced features of subprocess.run(), namely ignore output to stdout:
+
+list_files = subprocess.run(["ls", "-l"], stdout=subprocess.DEVNULL)
+
+# Expected output:
+
+'''
+$ python3 list_subprocess.py
+The exit code was: 0
+'''
+
+# Providing input to the subproces.run command
+
+import subprocess
+
+useless_cat_call = subprocess.run(["cat"], stdout=subprocess.PIPE, text=True, input="Hello from the other side")
+print(useless_cat_call.stdout)
+
+# Output: Hello from the other side
+
+# Script:
+
+import subprocess
+
+command = "head"
+options = "-n 1"
+filename = input("Please introduce name(s) to file(s) of interest: \n")
+
+args = []
+args.append(command)
+args.append(options)
+for i in filename.split():
+ args.append(i)
+
+output = subprocess.run(args, capture_output=True)
+print('###########')
+print('Return code:', output.returncode)
+# Use decode function to convert to string
+print('Output:', output.stdout.decode("utf-8"))
 
 # Example 2: Using Python subprocess.popen()
 
@@ -110,10 +226,20 @@ except subprocess.CalledProcessError as e:
 
 # Output: sample data
 
-program = "mediaplayer.exe"
-process = subprocess.Popen(program)
-code = process.wait()
-print(code)
+# OR: 
+
+import subprocess 
+with subprocess.Popen(['ls', '-l'], stdout=subprocess.PIPE, text=True) as proc:
+	output = proc.stdout.read()
+print(output)
+
+# OR: 
+
+import subprocess
+
+(['ls', '-l'])process = subprocess.Popen(['ls', '-l'])
+return_code = process.wait()
+print(f"Command exited with code {return_code}")
 
 # Output: 0
 
@@ -126,6 +252,41 @@ stdout, stderr = process.communicate()
 print(stdout)
 
 # Output: ... Program finished with exit code 0 \n Press ENTER to exit console.
+
+# Interacting with a command that requires input using popen
+
+import subprocess
+
+proc = subprocess.popen(["passwd"], stdin=subprocess.PIPE, text=True)
+new_password = "new_password\nnew_password\n"
+
+proc.communicate(new_password)
+
+# Function to change the permission of a given file
+
+def change_permissions(args, filename):
+ cmd = 'chmod'
+ ls = 'ls'
+ 
+ # Getting the permissions of a file before chmod
+ data = subprocess.Popen([ls, '-l', filename], stdout=subprocess.PIPE)
+ output, _ = data.communicate()
+ print(f'File permissions before chmod {args}:')
+ print(output.decode())
+ 
+ # Executing chmod on the specified file
+ temp = subprocess.Popen([cmd, args, filename], stdout=subprocess.PIPE)
+ temp.communicate()
+ 
+ # Getting the permissions of the file after chmod
+	data = subprocess.Popen([ls, '-l', filename], stdout = subprocess.PIPE)
+ output, _ = data.communicate()
+ print(f'File permissions after chmod {args}:')
+ print(output.decode())
+
+if __name__ == '__main__':
+    # Changing the permissions of 'sample.txt'
+    change_permissions('755', 'sample.txt')
 
 # Example 3: Using the call() - a function that is used to run a command in a separate process and wait for it to complete. It returns the return code of the command, which is zero, if the command
 # was successful, and non-zero, if it failed. The command is useful whenyou want to run a command and check the return code, but do not need to capture the output. The call() function takes the same arguments as run(). 
