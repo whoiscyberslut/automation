@@ -9,6 +9,10 @@ So, altogether len([ip for ip in ip_addresses if ip == ip_address]) calculates h
 ip_address.
 '''
 
+# https://pythontutor.com/visualize.html#mode=edit
+# https://regex101.com
+# https://strftime.org
+
 # Example 1: Parse an apache log file and find out the IP address. We need to count the number of times the IP address repeat, which means after parsing if:
 
 '''
