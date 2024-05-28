@@ -263,5 +263,44 @@ for filename in os.listdir('directory_path'):
 
 # Output: 'new_file_1.txt', 'new_file_2.txt', 'new_file_3.txt', and so on...
 
+# Example 8: Search for specific kind of file *.conf
 
+import os
+import argparse
 
+my_parser = argparse.ArgumentParser(description='Reading the directory to find the file')
+my_parser.add_argument('pathname', help='Please enter the directory path')
+my_parser.add_argument('filename', help='Please enter the filename to search')
+
+args = my_parser.parse_args()
+
+for dirname, dirpath, filenames in os.walk(args.pathname):  
+    for file in filenames:  
+        if file == args.filename:  
+          if file.endswith9'.conf'):
+            print(os.path.join(dirname, file))
+
+# Example 9: Finding file greater than X days old using Python
+
+import os
+import datetime
+
+current_date = datetime.datetime.now()  
+max_age = 10
+
+for dirname, dirpath, filename in os.walk("/etc"):  
+    for file in filename:  
+        comp_path = os.path.join(dirname, file)  
+        file_stat = os.stat(comp_path)  
+        file_ctime = file_stat.st_ctime  
+        file_creation_date = datetime.datetime.fromtimestamp(file_ctime)  
+        print(file_creation_date)
+
+# Next: Find the difference
+
+diff_in_days = (current_date - file_creation_date).days
+
+# Now we only need to find the files which are greater than 10 days
+if diff_in_days > max_age:  
+  os.remove()  
+  print(comp_path, diff_in_days)
