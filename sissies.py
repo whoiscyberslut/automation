@@ -23,3 +23,29 @@ os.uname()
 
 import sys
 print(sys.version)
+
+# Example 3: Get the platform using the sys module
+
+import sys
+print(sys.platform) # => 'Linux'
+
+# Example 4: Get the path using the sys module
+
+import sys
+print(sys.path)
+
+# Example 5: Get the modules that Python is imporing using the sys module
+
+import sys
+sys.modules
+
+# Example 6: Using sys.exit()
+
+if not path.exists("/etc/xxx"):
+  sys.exit()
+
+# OR:
+
+if len(sys.arv) != 3:
+  print("This script needs at least 3 command-line arguments")
+  sys.exit()
