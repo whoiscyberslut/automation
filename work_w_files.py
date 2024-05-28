@@ -27,6 +27,23 @@ entries = os.listdir('my_directory')
 for entry in entries:
   print(entry)
 
+# Find files in the current directory (but not subdirectories)
+
+for file in os.listdir("/root"):
+	if file.startswith("art"):
+		print(file)
+
+# VS
+
+# Find files recursively 
+
+for path, currentDirectory, files in os.walk("/root"):
+	for file in files:
+		if file.startswith("art"):
+			print(file)
+
+# Output: article 1.rtf
+
 # Method 2: Using os.scandir() - os.scandir() returns an iterator
 
 import os
