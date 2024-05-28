@@ -112,7 +112,7 @@ temp = re.findall(r'\d+', lastfile)[0]
 for i in range(int(temp), len(files2) + int(temp)): #int(temp): Converts the value stored in the variable temp (which represents the numeric part extracted from the last filename in path/to/folder1) into an integer. 
   os.rename('/path/to/folder2' + '/' + files2[i], f"/path/to/folder2/file{i}.txt")
 
-# Example 3: Renaming files with sequence number
+# Example 4: Renaming files with sequence number
 
 import os
 
@@ -123,7 +123,7 @@ for filename in os.listdir(path):
   os.rename(filename, 'newfilename_' + str(fileseq))
   fileseq += 1
 
-# Example 4: Get a filename without extension using the split() function 
+# Example 5: Get a filename without extension using the split() function 
 
 import os
 path = '/path/to/directory/filename.exe'
@@ -186,3 +186,47 @@ file_name = os.path.splitext(full_name)
 
 print(full_name)
 print(file_name[0])
+
+# Example 6: Renaming files according to the specified format - day, month, year, and the original category (e.g., Document), with the appropriate extension (.pdf or .jpg)
+
+'''
+Input(Files in the Current Directory):
+
+2024-05-27-Document.pdf
+2024-05-27-Photo.jpg
+2024-05-28-Document.pdf
+2024-05-28-Photo.jpg
+
+After running the script, the files will be renamed according to the specified format. Let's assume that the fourth component in each file name represents the day, 
+the second component represents the month, and the third component represents the year. The new format will be: {day}-{month}-{year}-{category}.{extension}.
+
+Output (Renamed Files):
+
+27-05-2024-Document.pdf
+27-05-2024-Photo.jpg
+28-05-2024-Document.pdf
+28-05-2024-Photo.jpg
+''''
+
+import os
+
+for file in os.listdir():
+  name, ext = os.path.splitext(file)
+  splitted = name.split("-")
+  splitted = [s.strip() for s in splitted]
+  new_name = f"{splitted[3].zfill(2)}-{splitted[1]}-{splitted[2]}-{splitted[0}{ext}
+  os.rename(file, new name)
+
+  # OR:
+
+import os
+from pathlib import Path
+
+for file in os.listdir():
+  f = Path(file)
+  name, ext = f.stem, f.suffix
+  splitted = name.split("-")
+  splitted = [s.strip() for s in splitted]
+  new_name = f"{splitted[3].zfill(2)}-{splitted[1]}-{splitted[2]}-{splitted[0]}{ext}"
+  f.rename(new_name)
+
