@@ -244,3 +244,128 @@ for path in Path('.').glob('*.mp3'):
     new_name = path.name.replace('.ogg', '')
     path.rename(path.with_name(new_name))
 
+# Example 8: Renaming files from file1.txt, file2.txt, file3.txt => 001_file1.txt, 002_file2.txt, 003_file3.txt, and so on...
+
+import os 
+import sys
+
+dir = "mydir"
+if not (os.path.exists(dir) and os.path.isdir(dir)):
+  # Write error message to stderr:
+  print(f"Directory {dir} does not exist or is not a directory", file=sys.stderr)
+  # Exit program with exit code 1 indicating the script has failed
+  sys.exit(1)
+# Get all files in the directory and store for each file it's name and the full path to the file
+# This way we won't have to create the full path many times
+my_files = [(file, os.path.join(dir, file)) for file in os.listdir(dir) if os.path.isfile(os.path.join(dir, file))]
+# Sort by "modified" timestamp in reverse order => file with most recent modified date first  
+# We need to use the fullpath here which is the second element in the tuple
+sorted_by_creation_date = sorted(my_files, key=lambda file:os.path.getmtime(file[1]), reverse=True)
+# Get number of digits required to assign a unique value
+number_of_digits = len(str(len(my_files)))
+# Use at least 3 digits, even if that's not actually required to uniquely assign values
+number_of_digits = max(3, number_of_digits)
+
+# Loop over all files and rename them
+print("Renaming files...")
+for index, (file, fullpath) in enumerate(my_files):
+  # Rename files with leading zeros and start with index 1 instead of 0
+  new_filename = f"File{index + 1}.txt" #f"{index + 1:0{number_of_digits}d}_{file}" #f"file{index + 1}.txt"
+  if new_filename == file:
+    # Move on to next file if the file already has the desired filename
+    print(f"File already has the desired filename: {file}. Skipping file.")
+    continue
+  # Concatenate new filename with path to directory
+  new_name = os.path.join(dir, new_filename)
+  # Rename the file
+  print(f"{file} => {new_filename}")
+  os.rename(fullpath, new_name)
+
+print("Done.")
+                                 
+# Example 9: Autoincrementing filenames
+
+import os
+
+files = [f"file_{i:05}x.txt for i in range(20)]
+
+org = os.path.abspath("./dir1/dir2/")
+new = os.path.abspath("./dir1/dir2/new/")
+os.makedirs(new)
+
+# Create all in org
+for f in files:
+  with open(os.path.join(org,f), "w") as f:
+    f.write(" ")
+    
+# Create every 4th one in new 
+for f in files[::4]:
+  with open(os.path.join(new, f), "w") as f:
+    f.write(" ")
+
+for root, dirs, files in os.walk(org):
+  print(root)
+  print(" [d] ", dirs)
+  print(" [f] ", sorted(files))
+
+def save_file(old_path, new_path):
+  # topdown=False allows to modify the results to NOT recurse
+  for root, dirs, files in os.walk(old_path, topdown=False):
+    dirs = []  # do not recurse into subdirs (whereto we copy the stuff)
+    root_abs = os.path.abspath(root)
+    new_abs = os.path.abspath(new_path)
+
+    for name in sorted(files): # sorting is convenience, not needed
+      old_file = os.path.join(root_abs, name)
+      new_file = os.path.join(new_abs, name)
+
+      # Fix renaming logic (simplified) - looks until a unique name is found
+      i = 1
+      base, extension = os.path.splitext(name)
+      while os.path.exists(new_file):
+        # Create a new name if it already exists 
+        new_file = os.path.join(new_abs, f"{base}_{i}{extension}")
+        i += 1
+      
+      # Do the copy over
+      os.rename(old_file, new_file)
+
+# Usage: 
+# org = os.path.abspath("./dir1/dir2/")
+# new = os.path.abspath("./dir1/dir2/new/")
+
+save_file(org,new)
+
+for root,dirs,files in os.walk(org):
+    print(root)
+    print(" [d] ", dirs)
+    print(" [f] ", sorted(files))
+
+# Output afterwards:
+
+'''
+/tmp/dir1/dir2
+ [d]  ['new']
+ [f]  []
+/tmp/dir1/dir2/new
+ [d]  []
+ [f]  ['file_00000x.txt', 'file_00000x_1.txt', 'file_00001x.txt', 'file_00002x.txt', 
+       'file_00003x.txt', 'file_00004x.txt', 'file_00004x_1.txt', 'file_00005x.txt', 
+       'file_00006x.txt', 'file_00007x.txt', 'file_00008x.txt', 'file_00008x_1.txt', 
+       'file_00009x.txt', 'file_00010x.txt', 'file_00011x.txt', 'file_00012x.txt', 
+       'file_00012x_1.txt', 'file_00013x.txt', 'file_00014x.txt', 'file_00015x.txt', 
+       'file_00016x.txt', 'file_00016x_1.txt', 'file_00017x.txt', 'file_00018x.txt', 
+       'file_00019x.txt']
+'''
+
+# Example 10: Rename with incrementing numbers
+
+import os
+
+i = 0
+while os.path.exists("sample%s.xml" % i):
+  i += 1
+
+fh = open("sample%s.xml", % i, "w")
+
+# That should give you sample0.xml initially, then sample1.xml, etc.
