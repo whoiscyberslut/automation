@@ -175,3 +175,53 @@ backup_path = os.path.abspath(backup_path)
 
 backup_directory(src_dir, backup_path)
 
+# Example 9: Using the platform module to find out what OS is running
+
+import platform
+
+platform.uname()
+platform.system() # similar to uname command
+
+if platform.system() == 'Linux':
+  os.system('ls')
+elif platform.system() == 'Windows':
+  os.system('dir')
+else:
+  print('Unsupported operating system')
+
+# Output: 'Linux'
+
+# Example 9: Using the platform module to find out the architecture
+
+import platform
+
+platform.architecture() # => ('64bit', 'ELF')
+platform.machine() # if you dont want output in the form of this tuple; => 'x86_64'
+
+# Example 9: Using the platform module to find out the specific kernel version of the OS
+
+import platform
+
+platform.release() # => '5.8.0-55-generic' 
+
+# Example 9: Using the platform module to find out the Python version
+
+import platform
+
+platform.python_version() # => '3.8.5'
+platform.python_version_tuple() # => ('3', '8', '5')
+
+# Example 10: Using Pyhon's getpass module
+
+import getpass
+
+password = input("Please enter your password: ")
+my_pass = getpass.getpass()  
+# print("Entered password is: ", my_pass)
+
+# OR:
+
+print("Please enter your password: ")  
+my_pass = getpass.getpass(prompt = "Enter your password: ") 
+
+getpass.getuser()
