@@ -33,12 +33,18 @@ print(result.stdout)
 
 # Output: This is directly from a subprocess.run() function
 
-# Safe way to pass user input
+# Always avoid using the shell=True parameter in subprocess functions with unsanitized inputs. Instead, pass the command and its arguments as a list:
 
 import subprocess
 
 user_input = 'myfolder'
 subprocess.run(['ls', '-l', user_input])
+
+# OR: 
+
+import subprocess
+user_input = input("Enter a filename to display: ")
+subprocess.run(['cat', user_input])
 
 # Example: A function to list the files in the current directory, parse the output, and print each line
 
