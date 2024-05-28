@@ -252,6 +252,10 @@ try:
 except OSError as e:
   print(f'Error: {trash_dir} : {e.strerror}') # everything in trash_dir is deleted when shutil.rmtree() is called on it
 
+# OR:
+
+os.removedirs("test1/test2") # removes every parent directory displayed in path until it encounters a non-empty directory
+
 # There may be cases where you want to delete empty folders recursively. You can do this using one of the methods discussed above in conjunction with os.walk():
 
 import os
