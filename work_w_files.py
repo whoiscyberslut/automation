@@ -6,7 +6,7 @@ try:
   with open('data.txt', 'r') as f:
     data = f.read()
 except FileNotFoundError:
-  print("The file does not exist.")
+  print("The file does not exist.")f
 except PermissionError:
   print("Permission denied.")
 
@@ -156,6 +156,9 @@ p.mkdir(parents=True)
 # Traversing Directories and Processing Files 
 
 # Method 1: Using os.walk() - either top-down or bottom-up
+
+os.walk("/etc/grub.d")
+list(os.walk("/etc/tuned")) # Output: [('/etc/grub.d', [], ['10_linxxx])]
 
 for dirpath, dirnames, files in os.walk('.'): # walks a directory tree and prints the names of the directories and files 
   print(f'Found directory: {dirpath}')
