@@ -72,9 +72,10 @@ subprocess.run("ls", shell=True) # to verify that the script created all the dir
 
 # Capture the output of the date command
 
-f = os.Popen("date").read()
 print(f) # returns the current date, which is stored in the variable f and then printed
 
+import os
+file_descriptor = os.popen(
 # The popen class has several methods that allow you to interact with the process, such as communicate(), poll(), wait(), terminate(), and kill().
 
 import subprocess
