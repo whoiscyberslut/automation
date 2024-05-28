@@ -189,6 +189,13 @@ for pdf in (glob.glob("/2020/*.pdf")):
 
 # Output: Removing salesjune.pdf
 
+import os
+from pathlib import Path
+
+for filename in Path.home().glob('*.rxt')
+# os.unlink(filename)
+  print(filename)
+
 # OSError is one of the most common errors you might stumble upon when renaming files. This error often pops up, when the file you're trying to rename either doesn't exist 
 # or you lack the necessary permissions to modify it, e.g: 
 
