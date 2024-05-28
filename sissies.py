@@ -6,3 +6,7 @@ print('\n')
 print('The name of the script is: %s' %sys.argv[0]) # name of the script
 print('The input to the script is: %s' %sys.argv[1]) # argument passed by user
 
+# Example 1: Get the OS name by using the sys module
+
+import sys
+sys.platform # returns 'linux' 
