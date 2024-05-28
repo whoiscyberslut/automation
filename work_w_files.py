@@ -219,6 +219,17 @@ if os.path.isfile(data_file):
 else:
   print(f'Error: {data_file} is not a valid filename')
 
+# OR:
+
+import os 
+filename = "/etc/hosts"
+
+if os.path.exists(filename) and os.path.isfile(filename):
+	print("File exists")
+else:
+	print("File does not exist")
+
+
 # The following example shows how to use exception handling to handle errors when deleting files:
 
 import os
