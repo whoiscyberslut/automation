@@ -72,10 +72,9 @@ subprocess.run("ls", shell=True) # to verify that the script created all the dir
 
 # Capture the output of the date command
 
+f = os.Popen("date").read()
 print(f) # returns the current date, which is stored in the variable f and then printed
 
-import os
-file_descriptor = os.popen(
 # The popen class has several methods that allow you to interact with the process, such as communicate(), poll(), wait(), terminate(), and kill().
 
 import subprocess
@@ -155,6 +154,63 @@ total 4
 Press ENTER to exit console. 
 '''
 
+# Define command and options wanted
+
+command = "head -n 1"
+filename = input("Please introduce name of the file of interest:\n")
+return_value = subprocess.call(command + filename, shell=True)
+print('##############')
+print('Return value:', return value)
+
+# A preferrable way to run subprocess.call is by using shell=False (it is the default option, so no need to specify it). Then we can simply call subprocess.call(args), 
+# where args[0] contains the command, and args[1:] contains all the extra options to the command. 
+
+# If you are putting shell=False, you need to specify your command in the form of a list, e.g. command = ["ls", "-l"]; if you are putting shell=True, you can put your 
+# command in the form of a string, like so: 
+
+command = "ls -l"
+rt = sp.wait()
+out, err = sp.communicate()
+print(out)
+print(err)
+
+# Example where we would use shell = True:
+
+import subprocess
+
+command = ["echo", "$SHELL"]
+sp = subprocess.Popen(command, shell = False, stdout = subprocess.PIPE, stderr = subprocess.PIPE, universal_newlines = True)
+rt = sp.wait()
+out, err = sp.communicate()
+print(out)
+print(err)
+
+# If shell = False: we are literally getting the value back (i.e. echo $SHELL); when shell = True, you are going to execute your command literally, so you need 
+# to enclose it in double quotes, like so:
+
+command = "echo $SHELL" # -> /bin/zsh
+
+# Example 
+
+import subprocess
+
+command = "head"
+options = "-n 1"
+
+filename = input("Please introduce name(s) of file(s) of interest:\n") # Now it's safe from shell injection
+
+# Create list with arguments for subprocess.call
+args = []
+args.append(command)
+args.append(options)
+for i in filename.split():
+ args.append(i)
+
+# Run subprocess.call and save return_value
+return_value = subprocess.call(args)
+print('############')
+print('Return value:', return_value)
+
 # Example 4: Using check_output() - a function that is similar to run(), but it only returns the standard output of the command, and raises a CalledProcessError exception if the return code is non-zero. It takes the 
 # same arguments as run(). It also returns the standard output of the command as a bytes object or string, if text=True is passed. Additionally, it can be passed an universal_newlines Boolean parameter.
 
@@ -168,4 +224,42 @@ except subprocess.CalledProcessError as e:
 
 # Example output: `Python 3.8.8`
 
+# Using universal_newlines=True returns the output as a string instead of bytes
+
+import subprocess
+
+output = subprocess.check_output('ls', universal_newlines=True)
+print(output)
+
+# Output:
+
+'''
+file1
+file2
+dir1
+'''
+
+# Using subprocess.CalledProcessError in the except clause to deal with the error in a controller manner and get information about it
+
+import subprocess
+
+command = "head"
+options = "-n 1"
+
+filename = input("Please introduce name(s) of file(s) of interest:\n")
+# Create list with arguments for subprocess.check_output
+args = [] 
+args.append(command)
+args.append(options)
+for i in filename.split():
+ args.append(i)
+ # Run subprocess.check_output and save command output
+try:
+ output = subprocess.check_output(args)
+ # Use decode function to convert to a string
+print('###########')
+print('Output: ', output.decode("utf-8"))
+# If checks_output returns an error:
+except subprocess.CalledProcessError as error:
+ print('Error code: ', error.returncode. '.Output', error.output.decode("utf-8"))
 
