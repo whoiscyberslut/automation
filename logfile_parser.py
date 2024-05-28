@@ -10,6 +10,8 @@
 # [2023-05-29 10:25:22] DEBUG: Initializing application modules
 # [2023-05-29 10:25:25] INFO: Application ready
 
+# https://github.com/PacktPublishing/Python-for-Automating-Information-Security/tree/master
+
 import os
 import re
 
