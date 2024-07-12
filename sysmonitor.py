@@ -153,6 +153,66 @@ def simple_ping(host):
   host = input("Enter a host to ping: ")
   simple_ping(host)
 
+# OR: 
+
+import subprocess
+
+def ping(host):
+    cmd = 'ping'
+    # Send two packets of data to the host; this is specified by '-c 2' in the args list 
+    temp = subprocess.Popen([cmd, '-c 2', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  
+    # Get the output of ping 
+    output, error = temp.communicate()
+    
+    if error:
+        print(f"Error: {error.decode()}")
+        return
+    
+    output = output.decode()  # Decode the byte output to string
+    
+    # Split the output into lines
+    output_lines = output.split("\n")
+  
+    # Print the results
+    print('Ping results:')
+    for line in output_lines:
+        print(line)
+
+    return output_lines
+
+if __name__ == '__main__':
+    ping('www.google.com')
+
+#import subprocess 
+#import os 
+  
+# A function to ping given host 
+#def ping(host): 
+#    cmd = 'ping'
+#    # Send two packets of data to the host;this is specified by '-c 2' in the args list 
+#    temp = subprocess.Popen([cmd, '-c 2', host], stdout = subprocess.PIPE) 
+  
+    # Get the output of ping 
+#    output = str(temp.communicate()) 
+#    output = output.split("\n") 
+#    output = output[0].split('\\') 
+#    # A variable to store the result:
+#    res = [] 
+  
+#    for line in output: 
+#        res.append(line) 
+  
+    # Print the results: 
+#    print('Ping results: ') 
+#    print('\n'.join(res[len(res) - 3:len(res) - 1])) 
+  
+#    return res 
+  
+  
+#if __name__ == '__main__': 
+#  ping('www.google.com') 
+
 # Example 8: Fetching the free disk space
 
 import subprocess
