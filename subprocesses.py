@@ -446,3 +446,22 @@ print('Output: ', output.decode("utf-8"))
 except subprocess.CalledProcessError as error:
  print('Error code: ', error.returncode. '.Output', error.output.decode("utf-8"))
 
+ # FINALLY: 
+
+ Example 10-8. Capturing standard out with Subprocess
+In [1]: In [2]: In [3]: In [4]:
+...: ...: ...: Filesystem
+import subprocess
+p = out for
+subprocess.Popen("df -h", shell=True, stdout=subprocess.PIPE) = p.stdout.readlines()
+Size /dev/disk0s2 93Gi devfs 107Ki fdesc 1.0Ki map -hosts 0Bi map auto_home 0Bi
+line in out:
+print line.strip()
+Used Avail Capacity
+78Gi 15Gi 85% 107Ki 0Bi 100% 1.0Ki 0Bi 100%
+0Bi 0Bi 100% 0Bi 0Bi 100%
+Mounted on /
+/dev
+/dev
+/net /home
+
