@@ -6,8 +6,8 @@ import filecmp
 from dirsync import sync
 import subprocess
 
-source_directory = '/Users/zvezdochka/Downloads/practical-python/Work/Data/'
-destination = '/Users/zvezdochka/Downloads/practical-python/Work/'
+source_directory = '/Users/user/Downloads/practical-python/Work/Data/'
+destination = '/Users/user/Downloads/practical-python/Work/'
 
 def main(dir1, dir2):
     result = filecmp.dircmp(dir1, dir2)
