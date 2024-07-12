@@ -40,7 +40,19 @@ print(f"Running processes for user '{specific_user}':")
 for process in processes:
     if process.info['username'] == specific_user:
         print(f"PID: {process.info['pid']}, Name: {process.info['name']}, User: {process.info['username']}")
-      
+
+# OR: Find the length of all running PIDs
+
+import psutil
+
+pids = psutil.pids()
+
+# Calculate the number of running processes
+num_pids = len(pids)
+
+# Print the number of running processes
+print("Number of running processes:", num_pids)
+
 # Example 2: Getting the name of the current user logged in the system using the os module
 
 import os
