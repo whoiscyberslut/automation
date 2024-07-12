@@ -27,6 +27,20 @@ print("Running processes: ")
 for process in processes:
   print(f"PID: {process.info['pid']}, Name: {process.info['name']}, User: {process.info['username']}")
 
+# OR: filter processes by specific user
+
+import psutil
+
+# Specify the user to filter processes by
+specific_user = "john"  # Replace "john" with the desired username
+
+# Get process information
+processes = psutil.process_iter(['pid', 'name', 'username'])
+print(f"Running processes for user '{specific_user}':")
+for process in processes:
+    if process.info['username'] == specific_user:
+        print(f"PID: {process.info['pid']}, Name: {process.info['name']}, User: {process.info['username']}")
+      
 # Example 2: Getting the name of the current user logged in the system using the os module
 
 import os
