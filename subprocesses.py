@@ -26,6 +26,22 @@ import subprocess
 result = subprocess.run(["python3", "my_python_file.py"], capture_output=True, text=True)
 print(result.stdout) 
 
+# OR: 
+
+import subprocess
+
+command = "ls"  # Replace this with the command you want to run
+
+result = subprocess.run(command, capture_output=True, text=True)
+output = result.stdout.strip()
+
+print("Command Output:")
+print(output)
+
+# Optionally, process the output further
+lines = output.splitlines()
+print("Number of lines:", len(lines))
+
 # OR: running Python code directly from a function 
 
 result = subprocess.run(["C:\Users\owner\anaconda3\python", "-c", "print('This is directly from a subprocess.run() function')"], capture_output=True, text=True)
