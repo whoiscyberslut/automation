@@ -5,7 +5,7 @@ def perfect_date(day, month, year):
   month = month.zfill(2)
   year = year.zfill(4)
   date = day + '/' + month + '/' + year
-  print('The perfect date (DD-MM-YYYY) is: " + date)
+  print('The perfect date (DD-MM-YYYY) is: ' + date)
 
 day = '2'
 month = '6'
