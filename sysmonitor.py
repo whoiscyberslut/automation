@@ -53,6 +53,15 @@ num_pids = len(pids)
 # Print the number of running processes
 print("Number of running processes:", num_pids)
 
+# OR: 
+
+import psutil
+
+processes = psutil.process_iter()
+
+for process in processes:
+    print(f"Process ID: {process.pid}, Name: {process.name()}")
+  
 # Example 2: Getting the name of the current user logged in the system using the os module
 
 import os
