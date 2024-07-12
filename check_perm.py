@@ -139,4 +139,40 @@ def check_file_permissions(file_path):
 import subprocess
 subprocess.call(['chmod', '0444', 'myfile.txt'])
 
+# OR: Function to change the permissions of a given file 
+
+import subprocess 
+import os 
+  
+def change_permissions(args, filename): 
+    # Command name:
+    cmd = 'chmod'
+  
+    # Getting the permissions of the file before chmod:
+    ls = 'ls'
+  
+    data = subprocess.Popen([ls, '-l', filename], stdout = subprocess.PIPE) 
+  
+    output = str(data.communicate()) 
+  
+    print('File permissions before chmod % s: ' %(args)) 
+    print(output) 
+  
+    # Executing chmod on the specified file:
+    temp = subprocess.Popen([cmd, args, filename], stdout = subprocess.PIPE) 
+  
+    # Getting the permissions of the file after chmod: 
+    data = subprocess.Popen([ls, '-l', filename], stdout = subprocess.PIPE) 
+  
+    output = str(data.communicate()) 
+  
+    # Printing the permissions after chmod:
+    print('File permissions after chmod % s: ' %(args)) 
+    print(output) 
+  
+if __name__ == '__main__': 
+          
+    # Changing the permissions of 'sample.txt':
+    change_permissions('755', 'sample.txt') 
+
 
