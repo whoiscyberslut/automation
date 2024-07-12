@@ -10,3 +10,37 @@ for file in filenames:
     print(f'snapshot_data_vss_iter_{iters:03}.caffemodel')
     iters += 500
 
+# OR
+
+import os
+import re
+
+def pad_filenames_with_zeros(directory):
+    # Define a regex pattern to match the filenames and extract the integer part
+    pattern = re.compile(r"(snapshot_data_vss(?:_iter)?)_(\d+)(\.caffemodel)")
+
+    # List all files in the given directory
+    for filename in os.listdir(directory):
+        match = pattern.match(filename)
+        if match:
+            prefix = match.group(1)
+            number = match.group(2)
+            suffix = match.group(3)
+            
+            # Pad the integer part with leading zeros (up to 5 digits for this example)
+            new_number = f"{int(number):05}"
+            new_filename = f"{prefix}_{new_number}{suffix}"
+            
+            # Construct the full paths
+            old_file_path = os.path.join(directory, filename)
+            new_file_path = os.path.join(directory, new_filename)
+            
+            # Rename the file
+            os.rename(old_file_path, new_file_path)
+            print(f"Renamed: {filename} -> {new_filename}")
+
+# Directory containing the files
+directory = '/path/to/your/folder'
+
+# Call the function to pad filenames with zeros
+pad_filenames_with_zeros(directory)
