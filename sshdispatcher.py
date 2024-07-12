@@ -7,7 +7,7 @@ A SSH-based command dispatch system
 """
 
 machines = ["10.0.1.40", "10.0.1.50", "10.0.1.51", "10.0.1.60", "10.0.1.80"]
-cmd = "uname"
+cmd = "uname" # or cmd = "python /src/fingerprint.py"
 
 for machine in machines:
     try:
