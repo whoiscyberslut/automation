@@ -8,8 +8,26 @@ from shutil import chown
 # Must provide at least one of user/group, or both
 chown('test.txt', user='nanodano')
 chown('test.txt', group='sudo')
-chown('test.txt', user='root', group='root')
 chown('test.txt', user=0, group=0) # root uids 
+chown('test.txt', user='root', group='root')
+
+# Example 
+
+from shutil import chown
+
+def change_file_ownership(filename, user, group):
+    try:
+        chown(filename, user=user, group=group)
+        print(f"Changed ownership of {filename} to user: {user}, group: {group}")
+    except Exception as e:
+        print(f"Error changing ownership of {filename}: {e}")
+
+# Example usage
+filename = 'test.txt'
+user = 'root'
+group = 'root'
+
+change_file_ownership(filename, user, group)
 
 # OR: 
 
