@@ -1,3 +1,6 @@
+import os
+from datetime import datetime
+
 def parse_backup_directory(directory, current_year):
     print(f"Parsing directory {directory} for backup files...\n")
 
