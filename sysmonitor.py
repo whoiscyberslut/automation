@@ -61,7 +61,10 @@ processes = psutil.process_iter()
 
 for process in processes:
     print(f"Process ID: {process.pid}, Name: {process.name()}")
-  
+
+# import psutil
+# [p.info for p in psutil.process_iter(attrs=['pid', 'name']) if 'python' in p.info['name']]
+
 # Example 2: Getting the name of the current user logged in the system using the os module
 
 import os
