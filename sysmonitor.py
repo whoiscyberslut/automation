@@ -65,6 +65,34 @@ for process in processes:
 # import psutil
 # [p.info for p in psutil.process_iter(attrs=['pid', 'name']) if 'python' in p.info['name']]
 
+# A script that passes a script (file name) to the user defined function is_process_running(), returning True or False.
+
+import psutil
+
+def is_process_running(name):
+    for process in psutil.process_iter(['name']):
+        if process.info['name'] == name:
+            return True
+    return False
+if is_process_running('script.py'):
+    print('The script is running.')
+else:
+    print('The script is not running.')
+
+# Check whether a script is running on Linux: 
+
+import subprocess
+
+script_name = "sample.py"
+ps_output = subprocess.check_output(["ps", "-ef"])
+ps_lines = ps_output.decode("utf-8").split("\n")
+for line in ps_lines:
+    if script_name in line:
+        print("The script is running")
+        break
+else:
+    print("The script is not running")
+  
 # Example 2: Getting the name of the current user logged in the system using the os module
 
 import os
