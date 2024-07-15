@@ -44,3 +44,19 @@ directory = '/path/to/your/folder'
 
 # Call the function to pad filenames with zeros
 pad_filenames_with_zeros(directory)
+
+# Usage: 
+
+# snapshot_data_vss_1.caffemodel
+# snapshot_data_vss_10.caffemodel
+# snapshot_data_vss_100.caffemodel
+# snapshot_data_vss_iter_5.caffemodel
+# snapshot_data_vss_iter_50.caffemodel
+
+# TO: 
+
+# snapshot_data_vss_00001.caffemodel
+# snapshot_data_vss_00010.caffemodel
+# snapshot_data_vss_00100.caffemodel
+# snapshot_data_vss_iter_00005.caffemodel
+# snapshot_data_vss_iter_00050.caffemodel
