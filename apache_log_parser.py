@@ -58,3 +58,13 @@ if __name__ == "__main__":
         print(f"You must specify a valid file to parse: {infile_name}")
         print(__doc__)
         sys.exit(1)
+
+
+# Example input:
+
+# 127.0.0.1 - - [10/Jul/2023:22:14:15 +0000] "GET /index.html HTTP/1.1" 200 1043
+# 92.168.1.1 - - [10/Jul/2023:22:14:16 +0000] "GET /about.html HTTP/1.1" 200 2048
+# 127.0.0.1 - - [10/Jul/2023:22:14:17 +0000] "POST /submit-form HTTP/1.1" 200 512
+# 10.0.0.1 - - [10/Jul/2023:22:14:18 +0000] "GET /contact.html HTTP/1.1" 200 1024
+# 192.168.1.1 - - [10/Jul/2023:22:14:19 +0000] "GET /home.html HTTP/1.1" 200 4096
+# 127.0.0.1 - - [10/Jul/2023:22:14:20 +0000] "GET /index.html HTTP/1.1" 404 -
