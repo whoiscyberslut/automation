@@ -60,3 +60,48 @@ pad_filenames_with_zeros(directory)
 # snapshot_data_vss_00100.caffemodel
 # snapshot_data_vss_iter_00005.caffemodel
 # snapshot_data_vss_iter_00050.caffemodel
+
+# OR: 
+
+import os
+import re
+
+def pad_filenames_with_zeros_and_increment(directory):
+    # Define a regex pattern to match the filenames and extract the integer part
+    pattern = re.compile(r"(snapshot_data_vss(?:_iter)?)_(\d+)(\.caffemodel)")
+
+    # List all files in the given directory and filter based on the regex pattern
+    filenames = [filename for filename in os.listdir(directory) if pattern.match(filename)]
+
+    # Sort filenames based on the number extracted by the regex pattern
+    filenames.sort(key=lambda x: int(pattern.match(x).group(2)))
+
+    # Initialize the iteration counter
+    iters = 500
+
+    for filename in filenames:
+        match = pattern.match(filename)
+        if match:
+            prefix = match.group(1)
+            suffix = match.group(3)
+
+            # Pad the iteration number with leading zeros (up to 3 digits)
+            new_number = f"{iters:03}"
+            new_filename = f"{prefix}_iter_{new_number}{suffix}"
+
+            # Construct the full paths
+            old_file_path = os.path.join(directory, filename)
+            new_file_path = os.path.join(directory, new_filename)
+
+            # Rename the file
+            os.rename(old_file_path, new_file_path)
+            print(f"Renamed: {filename} -> {new_filename}")
+
+            # Increment the iteration counter
+            iters += 500
+
+# Directory containing the files
+directory = '/path/to/your/folder'
+
+# Call the function to pad filenames with zeros and increment the iteration number
+pad_filenames_with_zeros_and_increment(directory)
