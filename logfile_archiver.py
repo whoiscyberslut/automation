@@ -1,3 +1,6 @@
+# A script that archives log files older than a specified number of days. The script moves these old log files 
+# to a separate archive directory and compresses them.
+
 import os
 import shutil
 import gzip
