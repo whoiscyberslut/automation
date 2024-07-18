@@ -23,7 +23,7 @@ def get_mac(ip):
         return None
 
 if __name__ == "__main__":
-    ip = "10.0.1.1"  # IP address to look up
+    ip = "10.0.1.1"  # IP address to look up; ip = input("Enter the IP address to look up: ")  # Prompt user for IP address
     mac_addr = get_mac(ip)
     if mac_addr:
         print(f"MAC address for {ip} is {mac_addr}")
