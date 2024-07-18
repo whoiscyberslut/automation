@@ -30,7 +30,7 @@ def replace_docroot(conf_string, vhost, new_docroot):
         if in_vhost and curr_vhost == vhost:
             docroot_match = docroot_re.search(line)
             if docroot_match:
-                line = docroot_re.sub(r'\1%s' % new_docroot, line)
+                line = docroot_re.sub(r'\1%s' % new_docroot, line) # OR: line = docroot_re.sub(fr'\1{new_docroot}', line)
         
         # Check for </VirtualHost> end tag
         if in_vhost:
