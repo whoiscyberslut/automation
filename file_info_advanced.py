@@ -15,3 +15,20 @@ def extract_info(path = '.'): #function to extract file info, defaulted to prese
             dict_list.append(file_dict) #appends file info dictionary to the list
     
     return dict_list #returns list
+
+# OR:
+
+import os
+
+dict_list = []
+
+for file in os.listdir(): #loop through all the files in current path
+    file_dict = {}
+    file_dict['path'] = os.path.realpath(file) #get path name of file
+    file_dict['size'] = os.path.getsize(file) #get size of file
+    dict_list.append(file_dict) #add dictionary of file information to list
+
+print(*dict_list, sep="\n") #print each dictionary of file information in new line
+
+# This script uses os.listdir() to list all files in the current directory (os.listdir() lists only the files and directories in the 
+# specified directory but does not recurse into subdirectories).
