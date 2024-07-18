@@ -105,3 +105,26 @@ directory = '/path/to/your/folder'
 
 # Call the function to pad filenames with zeros and increment the iteration number
 pad_filenames_with_zeros_and_increment(directory)
+
+# OR: 
+
+import re
+
+# Define the regex pattern
+pattern = re.compile(r"(snapshot_data_vss(?:_iter)?)_(\d+)(\.caffemodel)")
+
+# Function to extract the numeric part from a filename
+def extract_numeric_part(filename):
+    match = pattern.match(filename)
+    if match:
+        return int(match.group(2))
+    else:
+        return 0  # Return 0 if no match found (you can adjust this as needed)
+
+# Example list of filenames
+filenames = ['snapshot_data_vss_100.caffemodel', 'snapshot_data_vss_10.caffemodel', 'snapshot_data_vss_50.caffemodel']
+
+# Sort filenames based on the numeric part extracted using the function
+sorted_filenames = sorted(filenames, key=extract_numeric_part)
+
+print(sorted_filenames)
