@@ -1,5 +1,6 @@
 import subprocess, time
 
+# This script is original work of @halcnf. It will be used for personal purposes and removed from the repo afterwards.
 # --------------------------------------------------------------------- #
 # get_cpuload
 localtime = time.gmtime()
