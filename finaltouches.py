@@ -156,3 +156,36 @@ with open(log_file, 'r') as file:
 # Timestamp: 2024-03-10 08:45:10, Severity: INFO, Message: User 'john_doe' logged in
 # Timestamp: 2024-03-10 08:50:55, Severity: INFO, Message: Request received: GET /api/data
 # Timestamp: 2024-03-10 08:55:32, Severity: ERROR, Message: Connection timeout while processing request
+
+# Method 3: Using built-in string manipulation
+
+log_file = 'server.log'
+
+with open(log_file, 'r') as file:
+    for line in file:
+        # Find the index of the first space character to 
+        # separate timestamp and rest of the message
+        space_index = line.index(' ')
+        timestamp = line[:space_index]
+
+        # Find the index of the next space character after 
+        # timestamp to separate severity and message
+        next_space_index = line.index(' ', space_index + 1)
+        severity = line[space_index+1:next_space_index]
+
+        # Extract the message
+        message = line[next_space_index+1:].strip()
+
+        # Process extracted information as needed
+        print(
+            f"Timestamp: {timestamp}, Severity: {severity},
+          Message: {message}")
+
+# Output:
+
+# Timestamp: 2024-03-10, Severity: 08:30:15, Message: INFO Server started successfully
+# Timestamp: 2024-03-10, Severity: 08:35:21, Message: ERROR Internal server error occurred
+# Timestamp: 2024-03-10, Severity: 08:40:02, Message: WARNING Disk space is running low
+# Timestamp: 2024-03-10, Severity: 08:45:10, Message: INFO User 'john_doe' logged in
+# Timestamp: 2024-03-10, Severity: 08:50:55, Message: INFO Request received: GET /api/data
+# Timestamp: 2024-03-10, Severity: 08:55:32, Message: ERROR Connection timeout while processing request
