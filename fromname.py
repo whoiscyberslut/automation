@@ -95,7 +95,7 @@ def write_combined_dataset(aggregated_directory, ip_results):
         print(f"Writing combined dataset to '{os.path.join(aggregated_directory, ip_address + '.txt')}'... done.")
     print("Aggregation completed!")
 
-directory = '/Users/cyberslut'  # Change this to your desired directory
+directory = '/Users/user/dir'  # Change this to your desired directory
 print("Parsing experiment result files in directory: {} ...".format(directory))
 aggregated_directory = os.path.join(directory, 'aggregated')
 ip_results = aggregate_results(directory)
