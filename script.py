@@ -47,6 +47,26 @@ def check_ownership(directory):
 
 def check_permissions(directory):
     files = [
+        ("group_only.txt", 0o640),
+        ("public_knowledge.txt", 0o644),
+        ("secret.txt", 0o600),
+        ("secret.txt.pgp", 0o644),
+        ("wiki.txt", 0o777)
+    ]
+    
+    for filename, permissions in files:
+        filepath = os.path.join(directory, filename)
+        try:
+            current_permissions = stat.S_IMODE(os.stat(filepath).st_mode)
+            if current_permissions != permissions:
+                os.chmod(filepath, permissions)
+        except Exception as e:
+            print(f"Failed to check permissions of {filename}: {e}")
+            sys.exit(1)
+
+
+def check_permissions(directory):
+    files = [
         ("group_only.txt", 0o770),
         ("public_knowledge.txt", 0o644),
         ("secret.txt", 0o600),
