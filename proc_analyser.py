@@ -12,7 +12,9 @@ def parse_process_file(filepath):
 
         total_processes = 0
         sh_files = 0
-
+        headers = lines[11]
+        headers_list = headers.split()
+        
         for line in process_lines:
             parts = line.split()
             if len(parts) >= 32:
