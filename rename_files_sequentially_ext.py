@@ -104,13 +104,66 @@ for file in os.listdir('/path/to/directory'):
 
 import os
 import re
-files = os.listdir(/path/to/folder1)
-files2 = os.listdir(/path/to/folder2)
-lastfile = files = [-1]
+files = os.listdir('/path/to/folder1')
+files2 = os.listdir('/path/to/folder2')
+lastfile = files[-1]
 temp = re.findall(r'\d+', lastfile)[0]
 
 for i in range(int(temp), len(files2) + int(temp)): #int(temp): Converts the value stored in the variable temp (which represents the numeric part extracted from the last filename in path/to/folder1) into an integer. 
   os.rename('/path/to/folder2' + '/' + files2[i], f"/path/to/folder2/file{i}.txt")
+
+# OR:
+
+import os
+import re
+
+def get_highest_sequence_number(directory):
+    """Extract the highest sequence number from filenames in the given directory."""
+    pattern = re.compile(r'file(\d+)a\.txt')  # Regex to match file names like file1a.txt
+    highest_num = 0
+    
+    for filename in os.listdir(directory):
+        match = pattern.search(filename)
+        if match:
+            num = int(match.group(1))
+            if num > highest_num:
+                highest_num = num
+                
+    return highest_num
+
+def rename_files(directory, start_number):
+    """Rename files in the directory starting with start_number."""
+    files = sorted(os.listdir(directory))
+    
+    for i, filename in enumerate(files):
+        if filename.startswith('file') and filename.endswith('.txt'):
+            # Extract current number and suffix from the filename
+            match = re.match(r'file(\d+)([a-z]?)\.txt', filename)
+            if match:
+                current_number = int(match.group(1))
+                suffix = match.group(2)
+                
+                # Generate the new filename with updated sequence number
+                new_number = start_number + i
+                new_filename = f"file{new_number}{suffix}.txt"
+                
+                # Construct the old and new file paths
+                old_file_path = os.path.join(directory, filename)
+                new_file_path = os.path.join(directory, new_filename)
+                
+                # Rename the file
+                os.rename(old_file_path, new_file_path)
+                print(f"Renamed: {old_file_path} -> {new_file_path}")
+
+if __name__ == "__main__":
+    folder1 = '/path/to/folder1'
+    folder2 = '/path/to/folder2'
+    
+    # Get the highest sequence number from folder1
+    highest_seq_num = get_highest_sequence_number(folder1)
+    
+    # Rename files in folder2 to follow the sequence
+    rename_files(folder2, highest_seq_num + 1)  # Start renaming from the next number
 
 # Example 4: Renaming files with sequence number
 
@@ -217,72 +270,55 @@ for file in os.listdir():
   new_name = f"{splitted[3].zfill(2)}-{splitted[1]}-{splitted[2]}-{splitted[0}{ext}
   os.rename(file, new name)
 
-  # OR:
-
-import os
-from pathlib import Path
-
-for file in os.listdir():
-  f = Path(file)
-  name, ext = f.stem, f.suffix
-  splitted = name.split("-")
-  splitted = [s.strip() for s in splitted]
-  new_name = f"{splitted[3].zfill(2)}-{splitted[1]}-{splitted[2]}-{splitted[0]}{ext}"
-  f.rename(new_name)
-
 # Example 7: Renaming filenames of the form `xyz.ogg.mp3` to `xyz.mp3`
 
 for file in os.listdir("./"):
   if file.endswith(".mp3") and '.ogg' in file:
     os.rename(file, file.replace('.ogg', ''))
 
-# OR
-
-from pathlib import Path
-for path in Path('.').glob('*.mp3'):
-  if '.ogg' in path.stem:
-    new_name = path.name.replace('.ogg', '')
-    path.rename(path.with_name(new_name))
-
 # Example 8: Renaming files from file1.txt, file2.txt, file3.txt => 001_file1.txt, 002_file2.txt, 003_file3.txt, and so on...
 
-import os 
+import os
 import sys
 
-dir = "mydir"
-if not (os.path.exists(dir) and os.path.isdir(dir)):
-  # Write error message to stderr:
-  print(f"Directory {dir} does not exist or is not a directory", file=sys.stderr)
-  # Exit program with exit code 1 indicating the script has failed
-  sys.exit(1)
-# Get all files in the directory and store for each file it's name and the full path to the file
-# This way we won't have to create the full path many times
-my_files = [(file, os.path.join(dir, file)) for file in os.listdir(dir) if os.path.isfile(os.path.join(dir, file))]
-# Sort by "modified" timestamp in reverse order => file with most recent modified date first  
-# We need to use the fullpath here which is the second element in the tuple
-sorted_by_creation_date = sorted(my_files, key=lambda file:os.path.getmtime(file[1]), reverse=True)
-# Get number of digits required to assign a unique value
-number_of_digits = len(str(len(my_files)))
-# Use at least 3 digits, even if that's not actually required to uniquely assign values
-number_of_digits = max(3, number_of_digits)
+def rename_files_in_directory(directory):
+    # Check if the specified directory exists and is a directory
+    if not (os.path.exists(directory) and os.path.isdir(directory)):
+        print(f"Directory {directory} does not exist or is not a directory", file=sys.stderr)
+        sys.exit(1)
 
-# Loop over all files and rename them
-print("Renaming files...")
-for index, (file, fullpath) in enumerate(my_files):
-  # Rename files with leading zeros and start with index 1 instead of 0
-  new_filename = f"File{index + 1}.txt" #f"{index + 1:0{number_of_digits}d}_{file}" #f"file{index + 1}.txt"
-  if new_filename == file:
-    # Move on to next file if the file already has the desired filename
-    print(f"File already has the desired filename: {file}. Skipping file.")
-    continue
-  # Concatenate new filename with path to directory
-  new_name = os.path.join(dir, new_filename)
-  # Rename the file
-  print(f"{file} => {new_filename}")
-  os.rename(fullpath, new_name)
+    # Get all files in the directory with their full paths
+    my_files = [(file, os.path.join(directory, file)) for file in os.listdir(directory) 
+                if os.path.isfile(os.path.join(directory, file))]
 
-print("Done.")
-                                 
+    # Sort files by modified timestamp in reverse order (most recent first)
+    sorted_files = sorted(my_files, key=lambda file: os.path.getmtime(file[1]), reverse=True)
+
+    # Determine the number of digits needed for numbering (at least 3 digits)
+    number_of_files = len(sorted_files)
+    number_of_digits = max(3, len(str(number_of_files)))
+
+    # Rename files with sequential numbers and leading zeros
+    print("Renaming files...")
+    for index, (old_name, fullpath) in enumerate(sorted_files):
+        # Generate the new filename with leading zeros
+        new_filename = f"{index + 1:0{number_of_digits}d}_{old_name}"
+        new_fullpath = os.path.join(directory, new_filename)
+        
+        if old_name != new_filename:
+            # Rename the file
+            print(f"Renaming {old_name} to {new_filename}")
+            os.rename(fullpath, new_fullpath)
+        else:
+            # Skip renaming if the file already has the desired filename
+            print(f"File already has the desired filename: {old_name}. Skipping file.")
+
+    print("Renaming complete.")
+
+# Specify the directory to rename files
+directory = "mydir"
+rename_files_in_directory(directory)
+
 # Example 9: Autoincrementing filenames
 
 import os
