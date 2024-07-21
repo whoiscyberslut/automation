@@ -44,3 +44,11 @@ if __name__ == "__main__":
     # Display .sh files count per user
     for user, count in sh_files_count_by_user.items():
         print(f"Number of .sh files running under user '{user}': {count}")
+
+# Try to save the output of the 'top' commmand to a file:
+
+import subprocess
+
+## use the following where appropriate within your loop
+with open("ss.txt", "w") as outfile:
+  subprocess.call("top -n1 -p 2948", shell=True, stdout=outfile)
