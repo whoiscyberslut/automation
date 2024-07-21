@@ -34,7 +34,7 @@ for index, file in enumerate(sorted_files, 1): # Loops through the sorted list o
 # Faster method:
 
 for i, filename in enumerate(glob.glob('/path/to/directory/*.txt'), start=1):
-    print('{:02d}_{}'.format(i, filename))
+    print('{i:02d}_{filename}')
 
 # Without list comprehension 
 # Note: {0:02d} is a format specifier that ensures that the value of i is printed with at least two digits, zero-padded if necessary (e.g., 01, 02, ..., 09, 10, ...).
