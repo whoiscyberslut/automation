@@ -59,21 +59,6 @@ Expected output:
     591.m4v
     577.mp4
 ''' 
-import re
-import os 
-
-with open('filenames.txt', 'r') as f:
-  files = f.read().splitlines() # splits those contents into individual lines where each line represents a filename
-
-p = re.compile(r'0?(d{3})')
-for file in files:
-  if m:= p.search(file):
-    print(m.group(1) + '.' + file.split('.'[-1])  
-# This line attempts to find the pattern defined by the compiled regular expression p within the current filename (file) using the search() method. 
-# If a match is found, the if condition evaluates to True, and the match object is assigned to 'm'. This is a use of the walrus operator (:=), introduced in Python 3.8, 
-# which assigns a value to a variable as part of an expression.
-  else:
-    print(file)    
 
 '''
 Output:
