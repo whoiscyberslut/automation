@@ -79,7 +79,50 @@ if is_process_running('script.py'):
 else:
     print('The script is not running.')
 
-# Check whether a script is running on Linux: 
+# Checking for processes actively running:
+
+pp([(p.pid, p.info) for p in psutil.process_iter(['name', 'status']) if p.info['status'] == psutil.STATUS_RUNNING])
+
+# Example output::
+
+# [(1150, {'name': 'Xorg', 'status': 'running'}),
+# (1776, {'name': 'unity-panel-service', 'status': 'running'}),
+# (20492, {'name': 'python', 'status': 'running'})]
+
+# Iterating through processes on your system and identifying processes that have opened log file
+
+for p in psutil.process_iter(['name', 'open_files']):
+      for file in p.info['open_files'] or []:
+          if file.path.endswith('.log'):
+               print("%-5s %-10s %s" % (p.pid, p.info['name'][:10], file.path))
+            
+# Example output:
+
+# 1510  upstart    /home/giampaolo/.cache/upstart/unity-settings-daemon.log
+# 2174  nautilus   /home/giampaolo/.local/share/gvfs-metadata/home-ce08efac.log
+# 2650  chrome     /home/giampaolo/.config/google-chrome/Default/data_reduction_proxy_leveldb/000003.log
+
+# Checking for processes that consume more than 500MB of memory
+
+pp([(p.pid, p.info['name'], p.info['memory_info'].rss) for p in psutil.process_iter(['name', 'memory_info']) if p.info['memory_info'].rss > 500 * 1024 * 1024])
+
+# Example output:
+
+# [(2650, 'chrome', 532324352),
+# (3038, 'chrome', 1120088064),
+# (21915, 'sublime_text', 615407616)]
+
+# Checking for top 3 processes consuming the most CPU
+
+pp([(p.pid, p.info['name'], sum(p.info['cpu_times'])) for p in sorted(psutil.process_iter(['name', 'cpu_times']), key=lambda p: sum(p.info['cpu_times'][:2]))][-3:])
+
+# Example output:
+
+# [(2721, 'chrome', 10219.73),
+# (1150, 'Xorg', 11116.989999999998),
+# (2650, 'chrome', 18451.97)]
+
+# Checking whether a script is running on Linux: 
 
 import subprocess
 
@@ -373,3 +416,5 @@ print("Please enter your password: ")
 my_pass = getpass.getpass(prompt = "Enter your password: ") 
 
 getpass.getuser()
+
+
