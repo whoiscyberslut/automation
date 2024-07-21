@@ -200,6 +200,4 @@ else:
   are_anagrams = False
 print('Is it true that "{}" and "{}" are anagrams? Our code says: {}'.format(word1, word2, are_anagrams))
 
-
-
 [name.replace(' ', '.').lower() + '@example.com' for name in names]
