@@ -16,6 +16,9 @@ def create_files(directory):
         file_path = os.path.join(directory, file_name)
         if not os.path.exists(file_path):
             open(file_path, 'a').close()
+            # OR: 
+            # with open(file_path, 'a') as file:
+            #     pass  # Creates an empty file
 
 def check_ownership(directory):
     files = [
