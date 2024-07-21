@@ -1,17 +1,19 @@
 import os
 import stat
 import sys
+import pwd
+import grp
 
 def create_files(directory):
     files = [
-        ("group_only.txt", "----rw----", 0o770),
-        ("public_knowledge.txt", "-rw-r--r--", 0o644),
-        ("secret.txt", "-rw-------", 0o600),
-        ("secret.txt.pgp", "-rw-r--r--", 0o644),
-        ("wiki.txt", "-rwxrwxrwx", 0o777)
+        ("group_only.txt", 0o770),
+        ("public_knowledge.txt", 0o644),
+        ("secret.txt", 0o600),
+        ("secret.txt.pgp", 0o644),
+        ("wiki.txt", 0o777)
     ]
     
-    for filename, permissions, mode in files:
+    for filename, mode in files:
         filepath = os.path.join(directory, filename)
         if not os.path.exists(filepath):
             try:
@@ -45,7 +47,7 @@ def check_ownership(directory):
 
 def check_permissions(directory):
     files = [
-        ("group_only.txt", 0o640),
+        ("group_only.txt", 0o770),
         ("public_knowledge.txt", 0o644),
         ("secret.txt", 0o600),
         ("secret.txt.pgp", 0o644),
