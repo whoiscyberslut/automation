@@ -29,5 +29,5 @@ for filename in filenames:
   dd[tuple(name.split('*-x-*'[:3])].append(filename)
 for key, fnames in dd.iteritems():
   for line in fileinput.FileInput(fnames): # uses fileinput to read lines from all files in the group as if they were a single file
-    pass # do something with lines from files with the same key
+    pass # replace pass statement with actual processing logic, like counting lines, searching for keywords, etc. 
 
